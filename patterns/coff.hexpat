@@ -5,6 +5,7 @@
 
 import type.time;
 import type.size;
+import std.array;
 
 enum Machine : u16 {
     Unknown     = 0x0000,
@@ -131,7 +132,7 @@ struct String {
 
 struct StringTable {
     u32 size;
-    String strings[while($ < addressof(size) + size)];
+    ByteSizedArray<String, size> strings;
 };
 
 bitfield SectionFlags {

@@ -1,6 +1,7 @@
 #pragma author WerWolv
 #pragma description Autodesk 3DS Max Model
 
+import std.array;
 import std.io;
 import type.base;
 
@@ -892,7 +893,7 @@ struct Chunk {
                 ChunkIdentifier::SOLID_BGND              |
                 ChunkIdentifier::AMBIENT_LIGHT
             ): {
-                Chunk chunks[while($ < chunkEnd)];
+                std::ByteSizedArray<Chunk, dataLength> chunks;
             }
 
             (

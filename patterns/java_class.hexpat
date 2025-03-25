@@ -10,7 +10,7 @@ import std.math;
 import std.core;
 import std.io;
 import std.sys;
-
+import std.array;
 using BitfieldOrder = std::core::BitfieldOrder;
 
 using u1 = u8;
@@ -1065,8 +1065,7 @@ struct attribute_code {
     u2 max_stack;
     u2 max_locals;
     u4 code_length;
-    u4 target_addr = $ + code_length;
-    instruction code[while($ < target_addr)];
+    std::ByteSizedArray<instruction, code_length> code;
     u2 exception_table_length;
     exception exception_table[exception_table_length];
     u2 attributes_count;

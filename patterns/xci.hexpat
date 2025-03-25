@@ -3,7 +3,7 @@
 #pragma magic [ 48 46 53 30 ] @ 0x00
 
 import std.core;
-
+import std.array;
 import type.magic;
 import type.size;
 
@@ -86,7 +86,7 @@ struct PartitionFs {
     type::Size<u32> stringTableSize;
     padding[4];
     FileEntry fileEntryTable[fileCount];
-    String stringTable[while($ < (addressof(fileEntryTable) + sizeof(fileEntryTable) + stringTableSize))];
+    std::ByteSizedArray<String, stringTableSize> stringTable;
 
     File files[fileCount];
 };

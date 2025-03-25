@@ -6,7 +6,7 @@
 
 import std.io;
 import type.guid;
-
+import std.array;
 // subsection 10.3.5.1
 struct HARD_DRIVE {
     u32 partitionNumber;
@@ -58,8 +58,7 @@ struct LOAD_OPTION {
     u16 filePathLength;
     char16 description[];
 
-    u64 startOffset = $;
-    DEVICE_PATH filePathList[while($ - startOffset < filePathLength)];
+    std::ByteSizedArray<DEVICE_PATH, filePathLength> filePathList;
     u8 optionalData;
 };
 

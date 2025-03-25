@@ -1,8 +1,9 @@
-#pragma description PyInstaller binray
+#pragma description PyInstaller binary
 
 #pragma endian big
 
 import std.mem;
+import std.array;
 
 // Reference:
 //     https://pyinstaller.org/en/stable/advanced-topics.html
@@ -77,4 +78,4 @@ struct TOC {
 };
 
 
-TOC toc[while( $ < cookie.TOClen + tocOffset)] @ tocOffset;
+std::ByteSizedArray<TOC, cookie.TOClen> toc @ tocOffset;
