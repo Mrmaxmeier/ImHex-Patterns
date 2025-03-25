@@ -4,7 +4,6 @@
 
 import std.io;
 import std.mem;
-import std.array;
 
 bitfield HeaderFlags {
     icon : 1;
@@ -42,7 +41,7 @@ struct RiffChunk {
         u32 remain = sizeof($) - addressof(type);
         u32 marked = size > remain ? remain : size;
 
-        std::ByteSizedArray<RiffChunk, marked> chunks;
+        RiffChunk chunks[while($ - addressof(type) < marked)];
     } else if (signature[0] == 'I' && parent.type == "INFO") {
         char info[size];
     } else if (signature == "anih") {
