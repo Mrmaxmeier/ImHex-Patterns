@@ -204,20 +204,18 @@ struct chunk_t {
     std::mem::Bytes<(4 + length)> crc_payload @ (start + 4) [[hidden]];
     u32 expected = std::hash::crc32(crc_payload, 0xFFFFFFFF, 0x04C11DB7, 0xFFFFFFFF, true, true);
     std::assert_warn(crc == expected, "Chunk CRC doesn't match");
+
+    if (name == "IEND") {
+        break;
+    }
 } [[name(chunkValueName(this))]];
 
 fn chunkValueName(ref chunk_t chunk) {
     return chunk.name;
 };
 
-struct chunk_set {
-    chunk_t chunks[while(builtin::std::mem::read_string($ + 4, 4) != "IEND")] [[inline]];
-} [[inline]];
-
 struct Chunks {
-    chunk_t ihdr_chunk [[comment("PNG Header chunk")]];
-    chunk_set set [[comment("PNG Chunks"), name("Chunks"), inline]];
-    chunk_t iend_chunk [[comment("Image End Chunk")]];
+    chunk_t chunks[while(!std::mem::eof())] [[inline]];
 };
 
 u8 visualizer[std::mem::size()] @ 0x00 [[sealed, hex::visualize("image", this)]];
