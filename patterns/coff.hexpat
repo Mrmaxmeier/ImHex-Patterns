@@ -132,7 +132,7 @@ struct String {
 
 struct StringTable {
     u32 size;
-    std::ByteSizedArray<String, size> strings;
+    std::ByteSizedArray<String, (size - 4)> strings;
 };
 
 bitfield SectionFlags {
