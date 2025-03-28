@@ -4,6 +4,7 @@
 #pragma endian big
 
 import std.mem;
+import std.hash;
 
 struct header_t {
     u8 highBitByte;
@@ -142,6 +143,7 @@ struct time_t {
 };
 
 struct chunk_t {
+    u64 start = $;
     u32 length [[color("17BECF")]];
     char name[4];
 
@@ -198,6 +200,10 @@ struct chunk_t {
     }
 
     u32 crc;
+
+    std::mem::Bytes<(4 + length)> crc_payload @ (start + 4) [[hidden]];
+    u32 expected = std::hash::crc32(crc_payload, 0xFFFFFFFF, 0x04C11DB7, 0xFFFFFFFF, true, true);
+    std::assert_warn(crc == expected, "Chunk CRC doesn't match");
 } [[name(chunkValueName(this))]];
 
 fn chunkValueName(ref chunk_t chunk) {
