@@ -5,14 +5,7 @@
 
 import std.mem;
 import std.hash;
-
-struct header_t {
-    u8 highBitByte;
-    char signature[3];
-    char dosLineEnding[2];
-    char dosEOF;
-    char unixLineEnding;
-};
+import type.magic;
 
 struct actl_t {
     u32 frames [[comment("Total № of frames in animation")]];
@@ -219,5 +212,5 @@ struct Chunks {
 };
 
 u8 visualizer[std::mem::size()] @ 0x00 [[sealed, hex::visualize("image", this)]];
-header_t header @ 0x00 [[comment("PNG file signature"), name("Signature")]];
+type::Magic<"\x89PNG\x0d\x0a\x1a\x0a"> signature @ 0x00;
 Chunks chunks @ 0x08 [[name("Chunks")]];
