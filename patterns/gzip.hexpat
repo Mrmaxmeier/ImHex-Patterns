@@ -73,7 +73,7 @@ struct GZip {
         u16 crc16;
     }
 
-    u8 data[while($ < std::mem::size() - 8)] [[sealed]];
+    u8 data[std::mem::size() - 8 - $] [[sealed]];
 
     u32 crc32;
     type::Size<u32> isize;
