@@ -6,6 +6,7 @@
 import std.mem;
 import std.hash;
 import type.magic;
+import type.base;
 
 struct actl_t {
     u32 frames [[comment("Total № of frames in animation")]];
@@ -192,7 +193,7 @@ struct chunk_t {
         u8 data[length];
     }
 
-    u32 crc;
+    type::Hex<u32> crc;
 
     std::mem::Bytes<(4 + length)> crc_payload @ (start + 4) [[hidden]];
     u32 expected = std::hash::crc32(crc_payload, 0xFFFFFFFF, 0x04C11DB7, 0xFFFFFFFF, true, true);
