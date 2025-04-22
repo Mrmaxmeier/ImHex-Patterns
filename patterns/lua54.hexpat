@@ -45,6 +45,7 @@ namespace impl {
 
 using LuaFunction;
 
+// Note: this is exactly uLEB128 but with the signaling bit flipped
 struct Size {
         u8 array[while(addressof(this) == $ || ((addressof(this)-$ < 9) && (std::mem::read_unsigned($-1, 1) & 0x80 == 0)))] [[hidden]];
 } [[sealed, format("impl::format_Size"), transform("impl::transform_Size")]];
