@@ -9,8 +9,6 @@
 #pragma MIME image/pif
 #pragma endian little
 
-import std.array;
-
 enum imageType_t : u16 {
 	RGB888 = 0x433C,
 	RGB565 = 0xE5C5,
@@ -47,17 +45,33 @@ struct PIF {
 	PIFFileHeader PIF_FileHeader;
 	PIFInfoHeader PIF_ImageHeader;
 
-	match (PIF_ImageHeader.ImageType) {
-		(imageType_t::IND24): std::ByteSizedArray<u24, PIF_ImageHeader.ColorTableSize> ColorTable;
-		(imageType_t::IND16): std::ByteSizedArray<u16, PIF_ImageHeader.ColorTableSize> ColorTable;
-		(imageType_t::IND8): std::ByteSizedArray<u8, PIF_ImageHeader.ColorTableSize> ColorTable;
+	if (PIF_ImageHeader.ImageType == imageType_t::IND24)
+	{
+		u24 ColorTable[PIF_ImageHeader.ColorTableSize/3];
+	}
+	else if (PIF_ImageHeader.ImageType == imageType_t::IND16)
+	{
+		u16 ColorTable[PIF_ImageHeader.ColorTableSize/2];
+	}
+	else if (PIF_ImageHeader.ImageType == imageType_t::IND8)
+	{
+		u8 ColorTable[PIF_ImageHeader.ColorTableSize];
 	}
 
-	u64 ImageDataSize = PIF_FileHeader.FileSize - PIF_FileHeader.ImageOffset;
-	match (PIF_ImageHeader.ImageType) {
-		(imageType_t::RGB888 | imageType_t::IND24): std::ByteSizedArray<u24, ImageDataSize> ImageData;
-		(imageType_t::RGB565 | imageType_t::IND16): std::ByteSizedArray<u16, ImageDataSize> ImageData;
-		(imageType_t::RGB332 | imageType_t::IND8): std::ByteSizedArray<u8, ImageDataSize> ImageData;
+	if ((PIF_ImageHeader.ImageType == imageType_t::RGB888) ||
+		(PIF_ImageHeader.ImageType == imageType_t::IND24))
+	{
+		u24 ImageData[(PIF_FileHeader.FileSize - PIF_FileHeader.ImageOffset)/3];
+	}
+	else if ((PIF_ImageHeader.ImageType == imageType_t::RGB565) ||
+			 (PIF_ImageHeader.ImageType == imageType_t::IND16))
+	{
+		u16 ImageData[(PIF_FileHeader.FileSize - PIF_FileHeader.ImageOffset)/2];
+	}
+	else if ((PIF_ImageHeader.ImageType == imageType_t::RGB332) ||
+			 (PIF_ImageHeader.ImageType == imageType_t::IND8))
+	{
+		u8 ImageData[(PIF_FileHeader.FileSize - PIF_FileHeader.ImageOffset)/1];
 	}
 };
 
