@@ -3,8 +3,10 @@
 
 #pragma MIME application/bson
 
+import std.array;
 import std.mem;
 import type.time;
+import type.magic;
 
 enum Type : u8 {
     Double              = 0x01,
@@ -81,52 +83,36 @@ struct Element {
 
     CString name;
 
-    if (type == Type::Double) {
-        double value;
-    } else if (type == Type::String) {
-        String value;
-    } else if (type == Type::EmbeddedDocument) {
-        Document value;
-    } else if (type == Type::Array) {
-        Document value;
-    } else if (type == Type::Binary) {
-        Binary value;
-    } else if (type == Type::Undefined) {
-        /* undefined */
-    } else if (type == Type::ObjectId) {
-        ObjectId value;
-    } else if (type == Type::Boolean) {
-        bool value;
-    } else if (type == Type::UTCDatetime) {
-        type::time64_t value;
-    } else if (type == Type::Null) {
-        /* null */
-    } else if (type == Type::Regex) {
-        CString regexPattern;
-        CString regexOptions;
-    } else if (type == Type::DBPointer) {
-        DBPointer value;
-    } else if (type == Type::JavaScript) {
-        String value;
-    } else if (type == Type::Symbol) {
-        String value;
-    } else if (type == Type::JavaScriptWithScope) {
-        String value;
-    } else if (type == Type::Int32) {
-        s32 value;
-    } else if (type == Type::Timestamp) {
-        u64 value;
-    } else if (type == Type::Int64) {
-        s64 value;
-    } else if (type == Type::Decimal128) {
-        u128 value;
+    match (type) {
+        (Type::Double): double value;
+        (Type::String): String value;
+        (Type::EmbeddedDocument): Document value;
+        (Type::Array): Document value;
+        (Type::Binary): Binary value;
+        (Type::Undefined): { /* undefined */ }
+        (Type::ObjectId): ObjectId value;
+        (Type::Boolean): bool value;
+        (Type::UTCDatetime): type::time64_t value;
+        (Type::Null): { /* null */ }
+        (Type::Regex): {
+            CString regexPattern;
+            CString regexOptions;
+        }
+        (Type::DBPointer): DBPointer value;
+        (Type::JavaScript): String value;
+        (Type::Symbol): String value;
+        (Type::JavaScriptWithScope): String value;
+        (Type::Int32): s32 value;
+        (Type::Timestamp): u64 value;
+        (Type::Int64): s64 value;
+        (Type::Decimal128): u128 value;
     }
 };
 
 struct Document {
     s32 listLength;
-    Element elements[while($ < ((addressof(this) + listLength) - 1))];
-    padding[1];
+    std::ByteSizedArray<Element, listLength - 5> elements;
+    type::Magic<"\0"> endOfDocument;
 };
 
 Document documents[while(!std::mem::eof())] @ 0x00 [[inline]];

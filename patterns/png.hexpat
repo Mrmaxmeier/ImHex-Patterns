@@ -5,6 +5,7 @@
 
 import std.mem;
 import std.hash;
+import std.sys;
 import type.magic;
 import type.base;
 

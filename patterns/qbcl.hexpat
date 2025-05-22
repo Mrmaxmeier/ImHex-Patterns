@@ -50,14 +50,19 @@ struct Node {
 	u8 visible;
 	u8 unknown2;
 	u8 locked;
-	if (type == 0) {
-		Matrix matrix;
-	} else if (type == 1) {
-		Model model;
-	} else if (type == 2) {
-		Compound compound;
+	match (type) {
+		(0): Matrix matrix;
+		(1): Model model;
+		(2): Compound compound;
 	}
 };
+
+struct ThumbnailPixel {
+	u8 b;
+	u8 g;
+	u8 r;
+	u8 a;
+} [[static]];
 
 struct Header {
 	u32 magic;
@@ -65,7 +70,7 @@ struct Header {
 	u32 fileversion;
 	u32 thumbwidth;
 	u32 thumbheight;
-	char bgra[thumbwidth * thumbheight * 4];
+	ThumbnailPixel thumb[thumbwidth * thumbheight];
 	String title;
 	String desc;
 	String metadata;

@@ -48,7 +48,6 @@ enum RefType : u8 {
   ExternRef = 0x6f,
 };
 
-// TODO?
 enum ValType : u8 {
   I32 = 0x7f,
   I64 = 0x7e,
@@ -320,8 +319,6 @@ struct Section {
   SectionId id;
   U32 size;
 
-  // TODO: remove the cursor thing after https://github.com/WerWolv/PatternLanguage/pull/156
-  u64 pos = $;
   match (id) {
     (SectionId::Custom): Custom<size> customsec [[fixed_size(size)]];
     (SectionId::Type): Vec<FuncType> typesec [[fixed_size(size)]];
@@ -338,7 +335,6 @@ struct Section {
     (SectionId::DataCount): U32 datacountsec [[fixed_size(size)]];
     (_): std::mem::Bytes<size> unknown;
   }
-  $ = pos + size;
 };
 
 struct Module {

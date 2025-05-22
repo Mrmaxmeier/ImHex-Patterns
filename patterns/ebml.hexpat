@@ -74,7 +74,6 @@ struct EBMLUIntElement {
 } [[sealed, format("uint_value"), transform("uint_value")]];
 
 struct EBMLIntElement {
-    ElementID id;
     EBMLNumber size;
     u8 data[size];
 } [[sealed, format("int_value"), transform("int_value")]];
@@ -97,7 +96,6 @@ fn int_value(ref EBMLIntElement element) {
 };
 
 struct EBMLASCIIStringElement {
-    ElementID id;
     EBMLNumber size;
     char data[size];
 } [[format("ascii_string_value"), transform("ascii_string_value")]];
@@ -105,7 +103,6 @@ struct EBMLASCIIStringElement {
 fn ascii_string_value(ref EBMLASCIIStringElement element) { return element.data; };
 
 struct EBMLUnicodeStringElement {
-    ElementID id;
     EBMLNumber size;
     char data[size];
 } [[format("unicode_string_value"), transform("unicode_string_value")]];
@@ -113,19 +110,16 @@ struct EBMLUnicodeStringElement {
 fn unicode_string_value(ref EBMLUnicodeStringElement element) { return element.data; };
 
 struct EBMLFloatElement {
-    ElementID id;
     EBMLNumber size;
     u8 data[size];
 }; // [[sealed, format("float_value"), transform("float_value")]];
 
 struct EBMLDateElement {
-    ElementID id;
     EBMLNumber size;
     u8 data[size];
 }; // [[sealed, format("date_value"), transform("date_value")]];
 
 struct ByteElement {
-    ElementID id;
     EBMLNumber size;
     std::mem::Bytes<size> data;
 };
@@ -134,13 +128,12 @@ using UnknownElement = ByteElement;
 
 using Element;
 struct CompoundElement {
-    ElementID id;
     EBMLNumber size;
     std::ByteSizedArray<Element, size> elements [[fixed_size(size)]];
 };
 
 struct Element {
-    ElementID id [[no_unique_address, hidden]];
+    ElementID id;
 
     match (id) {
         (0xA45DFA3): CompoundElement EBML;
@@ -230,5 +223,5 @@ struct Element {
     }
 } [[inline]];
 
-type::Magic<"\x1a\x45\xdf\xa3"> magic @ 0x00 [[hidden]];
+// type::Magic<"\x1a\x45\xdf\xa3"> magic @ 0x00 [[hidden]];
 Element elements[while(!std::mem::eof())] @ 0x00;
