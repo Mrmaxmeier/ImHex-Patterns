@@ -640,21 +640,25 @@ struct Elf32_Shdr {
     Elf32_Word sh_entsize;
 
     if (sh_size > 0 && sh_offset + sh_size < std::mem::size()) {
-    	if (sh_type == SHT::NOBITS || sh_type == SHT::NULL) {
-		// Section has no data
-		} else if (sh_type == SHT::STRTAB) {
-			String stringTable[while($ < (sh_offset + sh_size))] @ sh_offset;
-		} else if (sh_type == SHT::SYMTAB || sh_type == SHT::DYNSYM) {
-			Elf32_Sym symbolTable[sh_size / sh_entsize] @ sh_offset;
-		} else if (sh_type == SHT::REL) {
-			Elf32_Rel relTable[sh_size / sh_entsize] @ sh_offset;
-		} else if (sh_type == SHT::RELA) {
-			Elf32_Rela relaTable[sh_size / sh_entsize] @ sh_offset;
-		} else if (sh_type == SHT::INIT_ARRAY || sh_type == SHT::FINI_ARRAY) {
-			u32 pointer[while($ < (sh_offset + sh_size))] @ sh_offset;
-		} else {
-			u8 data[sh_size] @ sh_offset [[sealed]];
-		}
+        match (sh_type) {
+            (SHT::NOBITS | SHT::NULL): {
+                // Section has no data
+            }
+            (SHT::STRTAB): {
+                String stringTable[while($ < (sh_offset + sh_size))] @ sh_offset;
+            }
+            (SHT::SYMTAB | SHT::DYNSYM): {
+                Elf32_Sym symbolTable[sh_size / sh_entsize] @ sh_offset;
+            }
+            (SHT::REL): Elf32_Rel relTable[sh_size / sh_entsize] @ sh_offset;
+            (SHT::RELA): Elf32_Rela relaTable[sh_size / sh_entsize] @ sh_offset;
+            (SHT::INIT_ARRAY | SHT::FINI_ARRAY): {
+                u32 pointer[while($ < (sh_offset + sh_size))] @ sh_offset;
+            }
+            (_): {
+                u8 data[sh_size] @ sh_offset [[sealed]];
+            }
+        }
     }
 } [[format("format_section_header")]];
 
@@ -703,21 +707,25 @@ struct Elf64_Shdr {
     Elf64_Xword sh_entsize;
 
     if (sh_size > 0 && sh_offset + sh_size < std::mem::size()) {
-    	if (sh_type == SHT::NOBITS || sh_type == SHT::NULL) {
-			// Section has no data
-		} else if (sh_type == SHT::STRTAB) {
-			String stringTable[while($ < (sh_offset + sh_size))] @ sh_offset;
-		} else if (sh_type == SHT::SYMTAB || sh_type == SHT::DYNSYM) {
-			Elf64_Sym symbolTable[sh_size / sh_entsize] @ sh_offset;
-		} else if (sh_type == SHT::REL) {
-			Elf64_Rel relTable[sh_size / sh_entsize] @ sh_offset;
-		} else if (sh_type == SHT::RELA) {
-			Elf64_Rela relaTable[sh_size / sh_entsize] @ sh_offset;
-		} else if (sh_type == SHT::INIT_ARRAY || sh_type == SHT::FINI_ARRAY) {
-			u32 pointer[while($ < (sh_offset + sh_size))] @ sh_offset;
-		} else {
-			u8 data[sh_size] @ sh_offset [[sealed]];
-		}
+        match (sh_type) {
+            (SHT::NOBITS | SHT::NULL): {
+                // Section has no data
+            }
+            (SHT::STRTAB): {
+                String stringTable[while($ < (sh_offset + sh_size))] @ sh_offset;
+            }
+            (SHT::SYMTAB | SHT::DYNSYM): {
+                Elf64_Sym symbolTable[sh_size / sh_entsize] @ sh_offset;
+            }
+            (SHT::REL): Elf64_Rel relTable[sh_size / sh_entsize] @ sh_offset;
+            (SHT::RELA): Elf64_Rela relaTable[sh_size / sh_entsize] @ sh_offset;
+            (SHT::INIT_ARRAY | SHT::FINI_ARRAY): {
+                u32 pointer[while($ < (sh_offset + sh_size))] @ sh_offset;
+            }
+            (_): {
+                u8 data[sh_size] @ sh_offset [[sealed]];
+            }
+        }
     }
 } [[format("format_section_header")]];
 

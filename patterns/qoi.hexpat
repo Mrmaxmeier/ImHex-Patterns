@@ -5,8 +5,6 @@
 
 import std.mem;
 
-namespace qoi {
-
 enum channels_t : u8 {
     RGB = 3,
     RGBA = 4
@@ -73,21 +71,23 @@ struct op_rgba {
     u8 alpha;
 } [[color("FF0000")]];
 
-u8 op_type;
 fn get_op_type() {
-    op_type = std::mem::read_unsigned($, 1);
+    u8 op_type = std::mem::read_unsigned($, 1);
     if (op_type < tags_t::rgb)
         op_type &= 0b11000000;
+    return op_type;
 };
 
 struct op_t {
-    qoi::get_op_type();
-    if      (op_type == tags_t::index) op_index;
-    else if (op_type == tags_t::diff)  op_diff;
-    else if (op_type == tags_t::luma)  op_luma;
-    else if (op_type == tags_t::run)   op_run;
-    else if (op_type == tags_t::rgb)   op_rgb;
-    else if (op_type == tags_t::rgba)  op_rgba;
+    u8 op_type = get_op_type();
+    match (op_type) {
+        (tags_t::index): op_index;
+        (tags_t::diff): op_diff;
+        (tags_t::luma): op_luma;
+        (tags_t::run): op_run;
+        (tags_t::rgb): op_rgb;
+        (tags_t::rgba): op_rgba;
+    }
 };
 
 struct file_t {
@@ -95,6 +95,4 @@ struct file_t {
     op_t data[while(!std::mem::eof())];
 };
 
-} // namespace qoi
-
-qoi::file_t qoi_picture @ 0x0;
+file_t qoi_picture @ 0x0;

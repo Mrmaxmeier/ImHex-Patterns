@@ -249,26 +249,17 @@ struct USBDescriptor {
     u8 bLength;
     DescriptorType bDescriptorType;
 
-    if (bDescriptorType == DescriptorType::DeviceDescriptor)
-        DeviceDescriptor deviceDescriptor [[inline]];
-    else if (bDescriptorType == DescriptorType::ConfigDescriptor)
-        ConfigDescriptor configDescriptor [[inline]];
-    else if (bDescriptorType == DescriptorType::StringDescriptor)
-        StringDescriptor stringDescriptor [[inline]];
-    else if (bDescriptorType == DescriptorType::InterfaceDescriptor)
-        InterfaceDescriptor interfaceDescriptor [[inline]];
-    else if (bDescriptorType == DescriptorType::EndpointDescriptor)
-        EndpointDescriptor endpointDescriptor [[inline]];
-    else if (bDescriptorType == DescriptorType::OtherSpeedConfigurationDescriptor)
-        OtherSpeedConfigurationDescriptor otherSpeedConfigurationDescriptor [[inline]];
-    else if (bDescriptorType == DescriptorType::DeviceQualifierDescriptor)
-        DeviceQualifierDescriptor deviceQualifierDescriptor [[inline]];
-    else if (bDescriptorType == DescriptorType::OTGDescriptor)
-        OTGDescriptor otgDescriptor [[inline]];
-    else if (bDescriptorType == DescriptorType::HIDDescriptor)
-        HIDDescriptor hidDescriptor [[inline]];
-
-    padding[bLength - ($ - addressof(this))];
-};
+    match (bDescriptorType) {
+        (DescriptorType::DeviceDescriptor): DeviceDescriptor deviceDescriptor [[inline]];
+        (DescriptorType::ConfigDescriptor): ConfigDescriptor configDescriptor [[inline]];
+        (DescriptorType::StringDescriptor): StringDescriptor stringDescriptor [[inline]];
+        (DescriptorType::InterfaceDescriptor): InterfaceDescriptor interfaceDescriptor [[inline]];
+        (DescriptorType::EndpointDescriptor): EndpointDescriptor endpointDescriptor [[inline]];
+        (DescriptorType::OtherSpeedConfigurationDescriptor): OtherSpeedConfigurationDescriptor otherSpeedConfigurationDescriptor [[inline]];
+        (DescriptorType::DeviceQualifierDescriptor): DeviceQualifierDescriptor deviceQualifierDescriptor [[inline]];
+        (DescriptorType::OTGDescriptor): OTGDescriptor otgDescriptor [[inline]];
+        (DescriptorType::HIDDescriptor): HIDDescriptor hidDescriptor [[inline]];
+    }
+} [[fixed_size(bLength)]];
 
 USBDescriptor descriptors[while(!std::mem::eof())] @ 0x00;

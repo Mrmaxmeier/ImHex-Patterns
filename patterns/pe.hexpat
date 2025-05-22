@@ -338,21 +338,25 @@ bitfield FunctionBitfield {
 };
 
 struct FunctionTableEntry {
-	if (coffHeader.architecture == ArchitectureType::MIPSFPU || coffHeader.architecture == ArchitectureType::R3000) {
-		u32 beginVA;
-		u32 endVA;
-		u32 exceptionHandlerPointer;
-		u32 handlerDataPointer;
-		u32 prologEndVA;
-	} else if (coffHeader.architecture == ArchitectureType::ARM || coffHeader.architecture == ArchitectureType::ARM64 || coffHeader.architecture == ArchitectureType::ARMNT ||
-				coffHeader.architecture == ArchitectureType::POWERPC || coffHeader.architecture == ArchitectureType::POWERPCFP ||
-				coffHeader.architecture == ArchitectureType::SH3 || coffHeader.architecture == ArchitectureType::SH3DSP || coffHeader.architecture == ArchitectureType::SH4) {
-		u32 beginVA;
-		FunctionBitfield miscellaneousBits;
-	} else if (coffHeader.architecture == ArchitectureType::AMD64 || coffHeader.architecture == ArchitectureType::IA64) {
-		u32 beginRVA;
-		u32 endRVA;
-		u32	unwindInformationRVA;
+	match (coffHeader.architecture) {
+		(ArchitectureType::MIPSFPU | ArchitectureType::R3000): {
+			u32 beginVA;
+			u32 endVA;
+			u32 exceptionHandlerPointer;
+			u32 handlerDataPointer;
+			u32 prologEndVA;
+		}
+		(ArchitectureType::ARM | ArchitectureType::ARM64 | ArchitectureType::ARMNT |
+			ArchitectureType::POWERPC | ArchitectureType::POWERPCFP |
+			ArchitectureType::SH3 | ArchitectureType::SH3DSP | ArchitectureType::SH4): {
+			u32 beginVA;
+			FunctionBitfield miscellaneousBits;
+		}
+		(ArchitectureType::AMD64 | ArchitectureType::IA64): {
+			u32 beginRVA;
+			u32 endRVA;
+			u32	unwindInformationRVA;
+		}
 	}
 };
 

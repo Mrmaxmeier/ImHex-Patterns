@@ -13,18 +13,14 @@ struct RecordEntry {
   // either blob or length
   char type[4];
 
-  if (type == "blob") {
-    u32 blobCount;
-    u8 blobData[blobCount];
-  }
-  else if (type == "long") {
-    u32 value;
-  }
-  else if (type == "shor") {
-    u32 value;
-  }
-  else if (type == "bool") {
-    u8 value;
+  match (type) {
+    ("blob"): {
+      u32 blobCount;
+      u8 blobData[blobCount];
+    }
+    ("long"): u32 value;
+    ("short"): u32 value;
+    ("bool"): u8 value;
   }
 };
 

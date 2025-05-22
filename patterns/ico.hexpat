@@ -32,12 +32,15 @@ struct ICONDIRENTRY {
 	u8 num_colors;
 	u8 reserved [[hidden]];
 
-	if (header.type == ImageType::Icon) {
-		u16 color_planes;
-		u16 bits_per_pixel;
-	} else if (header.type == ImageType::Cursor) {
-		u16 horizontal_hotspot_coordinate;
-		u16 vertical_hotspot_coordinate;
+	match (header.type) {
+		(ImageType::Icon): {
+			u16 color_planes;
+			u16 bits_per_pixel;
+		}
+		(ImageType::Cursor): {
+			u16 horizontal_hotspot_coordinate;
+			u16 vertical_hotspot_coordinate;
+		}
 	}
 
 	u32 image_data_size;

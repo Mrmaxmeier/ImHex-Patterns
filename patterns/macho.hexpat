@@ -226,20 +226,22 @@ bitfield Flags {
 struct Header {
     Magic magic;
     CpuType cpuType;
-    if (cpuType == CpuType::VAX) SubCpuTypeVAX subCpuType;
-    else if (cpuType == CpuType::ROMP) SubCpuTypeROMP subCpuType;
-    else if (cpuType == CpuType::BS32032 || cpuType == CpuType::BS32332 || cpuType == CpuType::NS32532) SubCpuType32XXX subCpuType;
-    else if (cpuType == CpuType::I386 || cpuType == CpuType::X86_64) SubCpuTypeI386 subCpuType;
-    else if (cpuType == CpuType::MIPS) SubCpuTypeMips subCpuType;
-    else if (cpuType == CpuType::HPPA) SubCpuTypeHPPA subCpuType;
-    else if (cpuType == CpuType::ARM) SubCpuTypeARM subCpuType;
-    else if (cpuType == CpuType::MC88000) SubCpuTypeMC88000 subCpuType;
-    else if (cpuType == CpuType::MC98000) SubCpuTypeMC98000 subCpuType;
-    else if (cpuType == CpuType::I860 || cpuType == CpuType::I860_LITTLE) SubCpuTypeI860 subCpuType;
-    else if (cpuType == CpuType::SPARC) SubCpuTypeSparc subCpuType;
-    else if (cpuType == CpuType::POWERPC || cpuType == CpuType::POWERPC64) SubCpuTypePowerPC subCpuType;
-    else if (cpuType == CpuType::VEO) SubCpuTypeVEO subCpuType;
-    else u24 subCpuType;
+    match (cpuType) {
+        (CpuType::VAX): SubCpuTypeVAX subCpuType;
+        (CpuType::ROMP): SubCpuTypeROMP subCpuType;
+        (CpuType::BS32032 | CpuType::BS32332 | CpuType::NS32532): SubCpuType32XXX subCpuType;
+        (CpuType::I386 | CpuType::X86_64): SubCpuTypeI386 subCpuType;
+        (CpuType::MIPS): SubCpuTypeMips subCpuType;
+        (CpuType::HPPA): SubCpuTypeHPPA subCpuType;
+        (CpuType::ARM): SubCpuTypeARM subCpuType;
+        (CpuType::MC88000): SubCpuTypeMC88000 subCpuType;
+        (CpuType::MC98000): SubCpuTypeMC98000 subCpuType;
+        (CpuType::I860 | CpuType::I860_LITTLE): SubCpuTypeI860 subCpuType;
+        (CpuType::SPARC): SubCpuTypeSparc subCpuType;
+        (CpuType::POWERPC | CpuType::POWERPC64): SubCpuTypePowerPC subCpuType;
+        (CpuType::VEO): SubCpuTypeVEO subCpuType;
+        (_): u24 subCpuType;
+    }
     Capabilities capabilities;
     FileType fileType;
     u32 numCommands;

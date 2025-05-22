@@ -342,38 +342,25 @@ struct MINIDUMP_DIRECTORY {
     MINIDUMP_STREAM_TYPE StreamType;
     MINIDUMP_LOCATION_DESCRIPTOR Location;
 
-    if (StreamType == MINIDUMP_STREAM_TYPE::ThreadListStream)
-        MINIDUMP_THREAD_LIST ThreadList @ Location.Rva;
-    else if (StreamType == MINIDUMP_STREAM_TYPE::ModuleListStream)
-        MINIDUMP_MODULE_LIST ModuleList @ Location.Rva;
-    else if (StreamType == MINIDUMP_STREAM_TYPE::MemoryListStream)
-        MINIDUMP_MEMORY_LIST MemoryList @ Location.Rva;
-    else if (StreamType == MINIDUMP_STREAM_TYPE::ExceptionStream)
-        MINIDUMP_EXCEPTION_STREAM  ExceptionInfo @ Location.Rva;
-    else if (StreamType == MINIDUMP_STREAM_TYPE::SystemInfoStream)
-        MINIDUMP_SYSTEM_INFO SystemInfo @ Location.Rva;
-    else if (StreamType == MINIDUMP_STREAM_TYPE::ThreadExListStream)
-        MINIDUMP_THREAD_EX_LIST ThreadExList @ Location.Rva;
-    else if (StreamType == MINIDUMP_STREAM_TYPE::Memory64ListStream)
-        MINIDUMP_MEMORY64_LIST Mem64List @ Location.Rva;
-    else if (StreamType == MINIDUMP_STREAM_TYPE::CommentStreamA)
-        char Comment[] @ Location.Rva;
-    else if (StreamType == MINIDUMP_STREAM_TYPE::CommentStreamW)
-        char16 Comment[] @ Location.Rva;
-    else if (StreamType == MINIDUMP_STREAM_TYPE::HandleDataStream)
-        MINIDUMP_HANDLE_DATA_STREAM HandleData @ Location.Rva;
-    else if (StreamType == MINIDUMP_STREAM_TYPE::FunctionTableStream)
-        MINIDUMP_FUNCTION_TABLE_STREAM FunctionTable @ Location.Rva;
-    else if (StreamType == MINIDUMP_STREAM_TYPE::UnloadedModuleListStream)
-        MINIDUMP_UNLOADED_MODULE_LIST UnloadModuleList @ Location.Rva;
-    else if (StreamType == MINIDUMP_STREAM_TYPE::MiscInfoStream)
-            MINIDUMP_MISC_INFO MiscInfo @ Location.Rva;
-    else if (StreamType == MINIDUMP_STREAM_TYPE::MemoryInfoListStream)
-            MINIDUMP_MEMORY_INFO_LIST MemInfoList @ Location.Rva;
-    else if (StreamType == MINIDUMP_STREAM_TYPE::ThreadInfoListStream)
-            MINIDUMP_THREAD_INFO_LIST ThreadInfoList @ Location.Rva;
-    else if (StreamType == MINIDUMP_STREAM_TYPE::HandleOperationListStream)
-            MINIDUMP_HANDLE_OPERATION_LIST HandleOperList @ Location.Rva;
+    match (StreamType) {
+        (MINIDUMP_STREAM_TYPE::ThreadListStream): MINIDUMP_THREAD_LIST ThreadList @ Location.Rva;
+        (MINIDUMP_STREAM_TYPE::ModuleListStream): MINIDUMP_MODULE_LIST ModuleList @ Location.Rva;
+        (MINIDUMP_STREAM_TYPE::MemoryListStream): MINIDUMP_MEMORY_LIST MemoryList @ Location.Rva;
+        (MINIDUMP_STREAM_TYPE::ExceptionStream): MINIDUMP_EXCEPTION_STREAM  ExceptionInfo @ Location.Rva;
+        (MINIDUMP_STREAM_TYPE::SystemInfoStream): MINIDUMP_SYSTEM_INFO SystemInfo @ Location.Rva;
+        (MINIDUMP_STREAM_TYPE::ThreadExListStream): MINIDUMP_THREAD_EX_LIST ThreadExList @ Location.Rva;
+        (MINIDUMP_STREAM_TYPE::Memory64ListStream): MINIDUMP_MEMORY64_LIST Mem64List @ Location.Rva;
+        (MINIDUMP_STREAM_TYPE::CommentStreamA): char Comment[] @ Location.Rva;
+        (MINIDUMP_STREAM_TYPE::CommentStreamW): char16 Comment[] @ Location.Rva;
+        (MINIDUMP_STREAM_TYPE::HandleDataStream): MINIDUMP_HANDLE_DATA_STREAM HandleData @ Location.Rva;
+        (MINIDUMP_STREAM_TYPE::FunctionTableStream): MINIDUMP_FUNCTION_TABLE_STREAM FunctionTable @ Location.Rva;
+        (MINIDUMP_STREAM_TYPE::UnloadedModuleListStream): MINIDUMP_UNLOADED_MODULE_LIST UnloadModuleList @ Location.Rva;
+        (MINIDUMP_STREAM_TYPE::MiscInfoStream): MINIDUMP_MISC_INFO MiscInfo @ Location.Rva;
+        (MINIDUMP_STREAM_TYPE::MemoryInfoListStream): MINIDUMP_MEMORY_INFO_LIST MemInfoList @ Location.Rva;
+        (MINIDUMP_STREAM_TYPE::ThreadInfoListStream): MINIDUMP_THREAD_INFO_LIST ThreadInfoList @ Location.Rva;
+        (MINIDUMP_STREAM_TYPE::HandleOperationListStream): MINIDUMP_HANDLE_OPERATION_LIST HandleOperList @ Location.Rva;
+        (_): MINIDUMP_HANDLE_OPERATION_LIST HandleOperList @ Location.Rva;
+    }
 };
 
 bitfield MINIDUMP_TYPE {

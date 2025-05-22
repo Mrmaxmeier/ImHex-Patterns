@@ -200,23 +200,14 @@ struct LuaInstruction {
 
 struct LuaConstant {
     HksType type;
-    if (type == HksType::TNIL) {
-    }
-    else if (type == HksType::TSTRING) {
-        String64 string;
-    }
-    else if (type == HksType::TNUMBER) {
-        float number;
-    }
-    else if (type == HksType::TBOOLEAN) {
-        bool boolean;
-    }
-    else if (type == HksType::TLIGHTUSERDATA) {
-        s64 userdata;
-    }
-    else {
-        s64 data;
-    }
+    match (type) {
+        (HksType::TNIL): {}
+        (HksType::TSTRING): String64 string;
+        (HksType::TNUMBER): float number;
+        (HksType::TBOOLEAN): bool boolean;
+        (HksType::TLIGHTUSERDATA): s64 userdata;
+        (_): s64 data;
+    };
 };
 
 struct HksLocal {

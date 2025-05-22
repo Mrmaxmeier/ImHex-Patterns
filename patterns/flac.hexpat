@@ -302,22 +302,16 @@ struct METADATA_BLOCK {
 	if (header.lastMetadataBlock)
 		break;
 
-	if (header.blockType == BLOCK_TYPE::STREAMINFO)
-		METADATA_BLOCK_STREAMINFO data;
-	else if (header.blockType == BLOCK_TYPE::PADDING)
-		METADATA_BLOCK_PADDING data;
-	else if (header.blockType == BLOCK_TYPE::APPLICATION)
-		METADATA_BLOCK_APPLICATION data;
-	else if (header.blockType == BLOCK_TYPE::SEEKTABLE)
-	     METADATA_BLOCK_SEEKTABLE data;
-	else if (header.blockType == BLOCK_TYPE::VORBIS_COMMENT)
-		METADATA_BLOCK_VORBIS_COMMENT data;
-	else if (header.blockType == BLOCK_TYPE::CUESHEET)
-		METADATA_BLOCK_CUESHEET data;
-	else if (header.blockType == BLOCK_TYPE::PICTURE)
-		METADATA_BLOCK_PICTURE data;
-	else
-		std::error("Invalid metadata block type!");
+	match (header.blockType) {
+	    (BLOCK_TYPE::STREAMINFO): METADATA_BLOCK_STREAMINFO data;
+		(BLOCK_TYPE::PADDING): METADATA_BLOCK_PADDING data;
+		(BLOCK_TYPE::APPLICATION): METADATA_BLOCK_APPLICATION data;
+		(BLOCK_TYPE::SEEKTABLE): METADATA_BLOCK_SEEKTABLE data;
+		(BLOCK_TYPE::VORBIS_COMMENT): METADATA_BLOCK_VORBIS_COMMENT data;
+		(BLOCK_TYPE::CUESHEET): METADATA_BLOCK_CUESHEET data;
+		(BLOCK_TYPE::PICTURE): METADATA_BLOCK_PICTURE data;
+		(_): std::error("Invalid metadata block type!");
+	};
 };
 
 struct STREAM {

@@ -159,39 +159,24 @@ struct chunk_t {
     #define cHRM_k "cHRM"
     #define tIME_k "tIME"
 
-    if (name == IHDR_k) {
-        ihdr_t ihdr [[comment("Image Header chunk"), name("IHDR")]];
-    } else if (name == PLTE_k) {
-        palette_entry_t entries[length / 3];
-    } else if (name == sRGB_k) {
-        sRGB srgb;
-    } else if (name == pHYs_k) {
-        phys_t phys;
-    } else if (name == acTL_k) {
-        actl_t  actl [[comment("Animation control chunk")]];
-    } else if (name == fcTL_k) {
-        fctl_t fctl [[comment("Frame control chunk")]];
-    } else if (name == iTXt_k) {
-        itxt_t text;
-    } else if (name == gAMA_k) {
-    	u32 gamma [[name("image gamma"), comment("4 byte unsigned integer representing gamma times 100000")]];
-    } else if (name == iCCP_k) {
-    	iccp_t iccp;
-    } else if (name == tEXt_k) {
-        text_t text;
-    } else if (name == zTXt_k) {
-        ztxt_t text;
-    } else if (name == iCCP_k) {
-        iccp_t iccp;
-    } else if (name == fdAT_k) {
-        fdat_t fdat [[comment("Frame data chunk")]];
-        u8 data[length-sizeof(u32)];
-    } else if (name == cHRM_k) {
-        chrm_t chrm;
-    } else if (name == tIME_k) {
-        time_t time;
-    } else {
-        u8 data[length];
+    match (name) {
+        (IHDR_k): ihdr_t ihdr [[comment("Image Header chunk"), name("IHDR")]];
+        (PLTE_k): palette_entry_t entries[length / 3];
+        (sRGB_k): sRGB srgb;
+        (pHYs_k): phys_t phys;
+        (acTL_k): actl_t  actl [[comment("Animation control chunk")]];
+        (fcTL_k): fctl_t fctl [[comment("Frame control chunk")]];
+        (iTXt_k): itxt_t text;
+        (gAMA_k): u32 gamma [[name("image gamma"), comment("4 byte unsigned integer representing gamma times 100000")]];
+        (iCCP_k): iccp_t iccp;
+        (tEXt_k): text_t text;
+        (zTXt_k): ztxt_t text;
+        (fdAT_k): {
+            fdat_t fdat [[comment("Frame data chunk")]];
+            u8 data[length-sizeof(u32)];
+        }
+        (tIME_k): time_t time;
+        (_): u8 data[length];
     }
 
     type::Hex<u32> crc;

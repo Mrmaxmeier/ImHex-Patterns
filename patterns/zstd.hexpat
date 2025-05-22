@@ -42,29 +42,21 @@ struct frame_header_t {
         window_descriptor_t window_descriptor;
     }
 
-    if (frame_header_descriptor.dictionary_id_flag == 1) {
-        le u8 dictionary_id;
-    }
-    else if (frame_header_descriptor.dictionary_id_flag == 2) {
-        le u16 dictionary_id;
-    }
-    else if (frame_header_descriptor.dictionary_id_flag == 3) {
-        le u32 dictionary_id;
+    match (frame_header_descriptor.dictionary_id_flag) {
+        (1): le u8 dictionary_id;
+        (2): le u16 dictionary_id;
+        (3): le u32 dictionary_id;
     }
 
-    if (frame_header_descriptor.frame_content_size_flag == 0) { // 0
-        if (frame_header_descriptor.single_segment_flag) {
-            le u8 content_size;
+    match (frame_header_descriptor.frame_content_size_flag) {
+        (0): {
+            if (frame_header_descriptor.single_segment_flag) {
+                le u8 content_size;
+            }
         }
-    }
-    else if (frame_header_descriptor.frame_content_size_flag == 1) {
-        le u16 content_size;
-    }
-    else if (frame_header_descriptor.frame_content_size_flag == 2) {
-        le u32 content_size;
-    }
-    else {
-        le u64 content_size;
+        (1): le u16 content_size;
+        (2): le u32 content_size;
+        (_): le u64 content_size;
     }
 };
 
@@ -88,17 +80,11 @@ struct data_block_t {
         last_block_flag = true;
     }
 
-    if (block_header.block_type == block_type::raw_block) {
-        le u8 block_content[block_header.block_size];
-    }
-    else if (block_header.block_type == block_type::rle_block) {
-        le u8 block_content[1];
-    }
-    else if (block_header.block_type == block_type::compressed_block) {
-        le u8 block_content[block_header.block_size];
-    }
-    else {
-        std::error("The data block seems to be corrupted!");
+    match (block_header.block_type) {
+        (block_type::raw_block): le u8 block_content[block_header.block_size];
+        (block_type::rle_block): le u8 block_content[1];
+        (block_type::compressed_block): le u8 block_content[block_header.block_size];
+        (_): std::error("The data block seems to be corrupted!");
     }
 };
 

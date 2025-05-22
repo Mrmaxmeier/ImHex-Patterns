@@ -423,28 +423,19 @@ struct ExtraDataBlock {
     else {
         u32 BlockSignature;
 
-        if (BlockSignature == 0xA000'0002)
-            ConsoleDataBlock CONSOLE_PROPS;
-        else if (BlockSignature == 0xA000'0004)
-            ConsoleFEDataBlock CONSOLE_FE_PROPS;
-        else if (BlockSignature == 0xA000'0006)
-            DarwinDataBlock DARWIN_PROPS;
-        else if (BlockSignature == 0xA000'0001)
-            EnvironmentVariableDataBlock ENVIRONMENT_PROPS;
-        else if (BlockSignature == 0xA000'0007)
-            IconEnvironmentDataBlock ICON_ENVIRONMENT_PROPS;
-        else if (BlockSignature == 0xA000'000B)
-            KnownFolderDataBlock KNOWN_FOLDER_PROPS;
-        else if (BlockSignature == 0xA000'0009)
-            PropertyStoreDataBlock PROPERTY_STORE_PROPS;
-        else if (BlockSignature == 0xA000'0008)
-            ShimDataBlock SHIM_PROPS;
-        else if (BlockSignature == 0xA000'0005)
-            SpecialFolderDataBlock SPECIAL_FOLDER_PROPS;
-        else if (BlockSignature == 0xA000'0003)
-            TrackerDataBlock TRACKER_PROPS;
-        else if (BlockSignature == 0xA000'000C)
-            VistaAndAboveIDListDataBlock VISTA_AND_ABOVE_IDLIST_PROPS;
+        match (BlockSignature) {
+            (0xA000'0002): ConsoleDataBlock CONSOLE_PROPS;
+            (0xA000'0004): ConsoleFEDataBlock CONSOLE_FE_PROPS;
+            (0xA000'0006): DarwinDataBlock DARWIN_PROPS;
+            (0xA000'0001): EnvironmentVariableDataBlock ENVIRONMENT_PROPS;
+            (0xA000'0007): IconEnvironmentDataBlock ICON_ENVIRONMENT_PROPS;
+            (0xA000'000B): KnownFolderDataBlock KNOWN_FOLDER_PROPS;
+            (0xA000'0009): PropertyStoreDataBlock PROPERTY_STORE_PROPS;
+            (0xA000'0008): ShimDataBlock SHIM_PROPS;
+            (0xA000'0005): SpecialFolderDataBlock SPECIAL_FOLDER_PROPS;
+            (0xA000'0003): TrackerDataBlock TRACKER_PROPS;
+            (0xA000'000C): VistaAndAboveIDListDataBlock VISTA_AND_ABOVE_IDLIST_PROPS;
+        }
     }
 };
 

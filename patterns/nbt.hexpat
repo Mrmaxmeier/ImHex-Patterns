@@ -24,38 +24,36 @@ enum Tag : u8 {
 using Element;
 
 struct Value {
-    if (parent.tag == Tag::Byte)
-        s8 value;
-    else if (parent.tag == Tag::Short)
-        s16 value;
-    else if (parent.tag == Tag::Int)
-        s32 value;
-    else if (parent.tag == Tag::Long)
-        s64 value;
-    else if (parent.tag == Tag::Float)
-        float value;
-    else if (parent.tag == Tag::Double)
-        double value;
-    else if (parent.tag == Tag::ByteArray) {
-        s32 arrayLength;
-        s8 value[arrayLength] [[sealed]];
-    } else if (parent.tag == Tag::String) {
-        u16 stringLength;
-        char value[stringLength];
-    } else if (parent.tag == Tag::List) {
-        Tag tag;
-        s32 listLength;
-        Value values[listLength] [[static]];
-    } else if (parent.tag == Tag::Compound) {
-        Element values[while(true)];
-    } else if (parent.tag == Tag::IntArray){
-        s32 arrayLength;
-        s32 value[arrayLength] [[sealed]];
-    } else if (parent.tag == Tag::LongArray) {
-        s32 arrayLength;
-        s64 value[arrayLength] [[sealed]];
-    } else {
-        std::error(std::format("Invalid tag {:02X}", TypeTag));
+    match (parent.tag) {
+        (Tag::Byte): s8 value;
+        (Tag::Short): s16 value;
+        (Tag::Int): s32 value;
+        (Tag::Long): s64 value;
+        (Tag::Float): float value;
+        (Tag::Double): double value;
+        (Tag::ByteArray): {
+            s32 arrayLength;
+            s8 value[arrayLength] [[sealed]];
+        }
+        (Tag::String): {
+            u16 stringLength;
+            char value[stringLength];
+        }
+        (Tag::List): {
+            Tag tag;
+            s32 listLength;
+            Value values[listLength] [[static]];
+        }
+        (Tag::Compound): Element values[while(true)];
+        (Tag::IntArray): {
+            s32 arrayLength;
+            s32 value[arrayLength] [[sealed]];
+        }
+        (Tag::LongArray): {
+            s32 arrayLength;
+            s64 value[arrayLength] [[sealed]];
+        }
+        (_): std::error(std::format("Invalid tag {:02X}", TypeTag));
     }
 } [[inline]];
 

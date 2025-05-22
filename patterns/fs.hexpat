@@ -152,10 +152,10 @@ struct PartitionEntry {
 	u32 lbaFirstSectorAddress;
 	u32 numSectors;
 
-	if (type == PartitionType::EmptyPartitionEntry)
-		continue;
-	else if (type == PartitionType::FAT32_CHS || type == PartitionType::FAT32_LBA)
-		fat32::Partition partition @ lbaFirstSectorAddress * 512;
+    match (type) {
+        (PartitionType::EmptyPartitionEntry): continue;
+        (PartitionType::FAT32_CHS | PartitionType::FAT32_LBA): fat32::Partition partition @ lbaFirstSectorAddress * 512;
+    }
 };
 
 struct MasterBootRecord {
