@@ -98,13 +98,12 @@ struct WebPData {
         ("VP8X"): WebPVP8XData VP8XData;
         ("ANIM"): WebPANIMData ANIMData;
         ("ANMF"): {
-            WebPANMFData ANMFData;
-            padding[paddedChunkSize - sizeof(ANMFData)];
+            WebPANMFData ANMFData [[fixed_size(paddedChunkSize)]];
         }
         ("VP8L"): {
-        WebPVP8LHeader VP8LData;
-        u8 image[chunkHeader.chunkSize-3];
-        padding[paddedChunkSize - sizeof(VP8LData) - sizeof(image)];
+            WebPVP8LHeader VP8LData;
+            u8 image[chunkHeader.chunkSize-3];
+            padding[paddedChunkSize - sizeof(VP8LData) - sizeof(image)];
         }
         ("ALPH"): {
             ALPHFlags flags;
@@ -112,8 +111,7 @@ struct WebPData {
             padding[paddedChunkSize - sizeof(ALPHData) - sizeof(flags)];
         }
         (_): {
-            u8 data[chunkHeader.chunkSize];
-            padding[paddedChunkSize - sizeof(data)];
+            u8 data[chunkHeader.chunkSize] [[fixed_size(paddedChunkSize)]];
         }
     }
 } [[name(std::format("Chunk ({})", chunkHeader.chunkId))]];

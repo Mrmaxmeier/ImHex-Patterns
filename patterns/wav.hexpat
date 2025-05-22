@@ -3,6 +3,7 @@
 #pragma MIME audio/x-wav
 #pragma MIME audio/wav
 
+import std.array;
 import std.mem;
 
 struct RiffHeader {
@@ -181,56 +182,42 @@ struct WaveListItem : WaveChunk {
   }
 };
 
-u64 listEnd;
-
-struct WaveList {
+struct WaveList<auto byteSize> {
   char type[4];
-
-  WaveListItem item[while ($ < listEnd)];
+  std::ByteSizedArray<WaveListItem, byteSize> items;
 };
-
-u32 paddedChunkSize;
 
 struct WavData {
   WaveChunk chunk;
-  paddedChunkSize = (chunk.chunkSize + 1) >> 1 << 1;
+  u32 paddedChunkSize = (chunk.chunkSize + 1) >> 1 << 1;
 
   if (chunk.chunkId == "fmt ") {
     WaveFormat fmt;
+    u32 size = paddedChunkSize - sizeof(fmt);
 
     if (fmt.formatTag == WaveFormatType::PCM) {
-      WaveFormatPCM pcmExtraData;
-      padding[paddedChunkSize - sizeof(fmt) - sizeof(pcmExtraData)];
+      WaveFormatPCM pcmExtraData [[fixed_size(size)]];
     } else if (fmt.formatTag == WaveFormatType::MS_ADPCM) {
-      WaveFormatMSADPCM msAdpcmExtraData;
-      padding[paddedChunkSize - sizeof(fmt) - sizeof(msAdpcmExtraData)];
+      WaveFormatMSADPCM msAdpcmExtraData [[fixed_size(size)]];
     } else if (fmt.formatTag == WaveFormatType::MPEG) {
-      WaveFormatMPEG mpegExtraData;
-      padding[paddedChunkSize - sizeof(fmt) - sizeof(mpegExtraData)];
+      WaveFormatMPEG mpegExtraData [[fixed_size(size)]];
     } else if (fmt.formatTag == WaveFormatType::MPEGLAYER3) {
-      WaveFormatMPEGLayer3 mpegLayer3ExtraData;
-      padding[paddedChunkSize - sizeof(fmt) - sizeof(mpegLayer3ExtraData)];
+      WaveFormatMPEGLayer3 mpegLayer3ExtraData [[fixed_size(size)]];
     } else if (fmt.formatTag == WaveFormatType::IEEEFloatingPoint) {
-        WaveFormatIEEEFloatingPoint ieeFloatingPointExtraData;
-        padding[paddedChunkSize - sizeof(fmt) - sizeof(ieeFloatingPointExtraData)];
+      WaveFormatIEEEFloatingPoint ieeFloatingPointExtraData [[fixed_size(size)]];
     } else {
-      WaveFormatExDummy unknown;
-      padding[paddedChunkSize - sizeof(fmt) - sizeof(unknown)];
+      WaveFormatExDummy unknown [[fixed_size(size)]];
     }
   } else if (chunk.chunkId == "data") {
     padding[paddedChunkSize];
   } else if (chunk.chunkId == "fact") {
-    WaveFact fact;
-    padding[paddedChunkSize - sizeof(fact)];
+    WaveFact fact [[fixed_size(paddedChunkSize)]];
   } else if (chunk.chunkId == "smpl") {
-    WaveSample smpl;
-    padding[paddedChunkSize - sizeof(smpl)];
+    WaveSample smpl [[fixed_size(paddedChunkSize)]];
   } else if (chunk.chunkId == "cue ") {
-    WaveCue cue;
-    padding[paddedChunkSize - sizeof(cue)];
+    WaveCue cue [[fixed_size(paddedChunkSize)]];
   } else if (chunk.chunkId == "LIST") {
-    listEnd = $ + chunk.chunkSize;
-    WaveList list;
+    WaveList<chunk.chunkSize> list;
     padding[paddedChunkSize % 1];
   } else {
     padding[paddedChunkSize];

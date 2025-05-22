@@ -25,8 +25,7 @@ struct Triangle {
 } [[static]];
 
 struct BinarySTLHeader {
-    char caption[while($[$] != 0x00 && $ - addressof(this) < 80)];
-    padding[80 - sizeof(caption)];
+    char caption[while($[$] != 0x00 && $ - addressof(this) < 80)] [[fixed_size(80)]];
     u32 triangleCount;
 };
 

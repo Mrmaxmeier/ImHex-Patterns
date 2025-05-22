@@ -54,8 +54,7 @@ struct PRODINFO {
 
 	u32 WlanCountryCodesNum;
 	u32 WlanCountryCodesLastIndex;
-	WlanCountryCode WlanCountryCodes[WlanCountryCodesNum];
-	padding[0x180 - sizeof(WlanCountryCodes)];
+	WlanCountryCode WlanCountryCodes[WlanCountryCodesNum] [[fixed_size(0x180)]];
 	padding[0x08];
 	u8 WlanMacAddress[6];
 	padding[0x10 - 6];

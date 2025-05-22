@@ -192,8 +192,8 @@ struct Config {
 struct NTAG {
 	ManufacturerData manufacturerData;
 	CapabilityContainer cc;
-	TLV tlv[while(true)];
-	padding[addressof(tlv) + cc.memorySize * 8 - sizeof(tlv)];
+	TLV tlv[while(true)] [[fixed_size(cc.memorySize * 8)]];
+	// padding[addressof(tlv) + cc.memorySize * 8 - sizeof(tlv)]; // TODO: what's going on here?
 	DynamicLockBytes dynamicLockBytes;
 	Config config;
 };

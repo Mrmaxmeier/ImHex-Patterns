@@ -170,8 +170,7 @@ struct Chunk {
   } else if (type == "AIMG") {
     Aimg aimg;
   } else if (type == "ABMP") {
-    Abmp abmp;
-    padding[length - sizeof(abmp)];
+    Abmp abmp [[fixed_size(length)]];
   } else {
     std::print("unknown type {}", type);
     padding[length];

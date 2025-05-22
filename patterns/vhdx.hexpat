@@ -13,8 +13,7 @@ using BitfieldOrder = std::core::BitfieldOrder;
 struct FileTypeIdentifier {
 	char signature[8];
 	char16 creator[256];
-	padding[0x1'0000 - sizeof(signature) - sizeof(creator)];
-};
+} [[fixed_size(0x1'0000)]];
 
 struct DataSector {
 	u32 sequenceHigh;

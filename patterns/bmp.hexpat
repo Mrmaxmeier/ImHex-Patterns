@@ -89,14 +89,13 @@ struct Bitmap {
 	// Deduce the header version from its size
 	u32 bmInfoHeaderSize [[hidden, no_unique_address]];
 	match (bmInfoHeaderSize) {
-		(40):  BitmapInfoHeaderV1 bmih;
-		(52):  BitmapInfoHeaderV2 bmih;
-		(56):  BitmapInfoHeaderV3 bmih;
-		(108): BitmapInfoHeaderV4 bmih;
-		(124): BitmapInfoHeaderV5 bmih;
-		(_):   BitmapInfoHeaderV1 bmih;
+		(40):  BitmapInfoHeaderV1 bmih [[fixed_size(bmih.biSize)]];
+		(52):  BitmapInfoHeaderV2 bmih [[fixed_size(bmih.biSize)]];
+		(56):  BitmapInfoHeaderV3 bmih [[fixed_size(bmih.biSize)]];
+		(108): BitmapInfoHeaderV4 bmih [[fixed_size(bmih.biSize)]];
+		(124): BitmapInfoHeaderV5 bmih [[fixed_size(bmih.biSize)]];
+		(_):   BitmapInfoHeaderV1 bmih [[fixed_size(bmih.biSize)]];
 	}
-	padding[bmih.biSize - sizeof(bmih)];
 
 	if (bmih.biBitCount <= 8)
 	{
