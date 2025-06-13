@@ -2,6 +2,8 @@
 #pragma description ESRI shapefile indices
 #pragma magic [ 00 00 27 0A ] @ 0x00
 
+import std.array;
+
 // Spec:
 // https://www.esri.com/content/dam/esrisites/sitecore-archive/Files/Pdfs/library/whitepapers/pdfs/shapefile.pdf
 
@@ -47,7 +49,7 @@ struct Record  {
 
 struct IndexFile {
     Header header;
-    Record records[while($ < header.file_length * 2)];
+    std::ByteSizedArray<Record, header.file_length * 2> records;
 };
 
 IndexFile file @ 0x00;

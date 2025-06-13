@@ -2,6 +2,8 @@
 #pragma description ESRI shapefile
 #pragma magic [ 00 00 27 0A ] @ 0x00
 
+import std.array;
+
 // Spec:
 // https://www.esri.com/content/dam/esrisites/sitecore-archive/Files/Pdfs/library/whitepapers/pdfs/shapefile.pdf
 
@@ -174,7 +176,7 @@ struct RecordHeader {
 
 
 struct Record {
-    RecordHeader;
+    RecordHeader header;
     ShapeType shape_type;
     match (shape_type) {
         (ShapeType::Null): NullShape;
@@ -196,6 +198,7 @@ struct Record {
 
 struct ShapeFile {
     Header header;
+    // std::ByteSizedArray<Record, header.file_length * 2 - sizeof(Header)> records;
     Record records[while ($ < (header.file_length * 2))];
 };
 

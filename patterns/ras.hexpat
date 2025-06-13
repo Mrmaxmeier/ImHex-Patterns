@@ -3,7 +3,6 @@
 #pragma MIME image/x-sun-raster
 #pragma endian big
 
-import std.mem;
 import type.magic;
 
 struct RAS {
