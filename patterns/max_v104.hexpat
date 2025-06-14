@@ -651,7 +651,7 @@ struct MessageLog
 struct MessageLogList
 {
   u16 message_log_count;
-  MessageLog entires[message_log_count];
+  MessageLog entries[message_log_count];
 };
 
 struct AiMap

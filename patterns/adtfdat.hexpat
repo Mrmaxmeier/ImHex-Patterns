@@ -131,14 +131,14 @@ struct IndexedFile {
         try {
             Chunk ring_front[while($ < header.continuous_offset)] @ header.first_chunk_offset;
             Chunk ring_back[while($ < header.ring_buffer_end_offset)] @ header.data_offset;
-            Chunk continueous[header.chunk_count - chunk_index] @ header.continuous_offset;
+            Chunk continuous[header.chunk_count - chunk_index] @ header.continuous_offset;
         } catch {
             std::warning("Too many chunks. Performing check only.");
             skip_valid_chunks = true;
             chunk_index = 0;
             Chunk ring_front[while($ < header.continuous_offset)] @ header.first_chunk_offset;
             Chunk ring_back[while($ < header.ring_buffer_end_offset)] @ header.data_offset;
-            Chunk continueous[while(chunk_index < header.chunk_count)] @ header.continuous_offset;
+            Chunk continuous[while(chunk_index < header.chunk_count)] @ header.continuous_offset;
         }
     } else {
         try {

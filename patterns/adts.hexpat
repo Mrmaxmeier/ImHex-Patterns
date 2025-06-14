@@ -85,7 +85,7 @@ fn GetChannelConfigurationComment(auto Channel_configuration)
     str comment = "";
     match (Channel_configuration)
     {
-    (0):          comment = "Defined in AOT Specifc Config";
+    (0):          comment = "Defined in AOT Specific Config";
     (1):          comment = "1 channel: front-center";
     (2):          comment = "2 channels: front-left, front-right";
     (3):          comment = "3 channels: front-center, front-left, front-right";

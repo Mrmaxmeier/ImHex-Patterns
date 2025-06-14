@@ -429,7 +429,7 @@ struct ScriptObject {
     // The Caprica compiler sets the length to just sizeof(data)
     // Since we have no way to identify which compiler is used we'll check
     // both and just hope it isn't short exactly 4 bytes
-    std::assert(sizeof(data) == length - 4 || sizeof(data) == length, "Length of object data in state missmatch.");
+    std::assert(sizeof(data) == length - 4 || sizeof(data) == length, "Length of object data in state mismatch.");
 };
 
 struct ScriptObjects {

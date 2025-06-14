@@ -88,6 +88,6 @@ struct Block {
 Block blocks[while(!std::mem::eof())] @ 0x00;
 
 std::assert(blocks[0].type == TYPE_UBNT,
-    "File is not a valid Ubiquiti firmare file!");
+    "File is not a valid Ubiquiti firmware file!");
 
 std::print("Version: {}", blocks[0].header.version);

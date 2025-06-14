@@ -923,9 +923,9 @@ struct STDF {
     } else if(far_try.REC_LEN == 0x0200 && far_try.REC_TYPE == 0 && far_try.REC_SUB == 10 && far_try.CPU_TYPE == CpuType::SUN1234) {
         std::core::set_endian(std::mem::Endian::Big);
     } else if(far_try.REC_LEN == 0x01200 && far_try.REC_TYPE == 0 && far_try.REC_SUB == 10 && far_try.CPU_TYPE == CpuType::PDP11_VAX) {
-        std::error("Mixed endianess of PDP11 / VAX not supported");
+        std::error("Mixed endianness of PDP11 / VAX not supported");
     } else {
-        std::warning("No valid FAR found at beginning of the file, endiness unknown - defaulting to native endianess");
+        std::warning("No valid FAR found at beginning of the file, endianness unknown - defaulting to native endianness");
     }
     std::assert(far_try.STDF_VER == 4, "Pattern is for STDF version 4, file indicates a different version in FAR");
     

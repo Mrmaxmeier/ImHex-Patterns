@@ -2,7 +2,7 @@
 #pragma description ext4 volume layout parser (until inodes)
 
 // Decodes the ext4 superblock, group descriptors and inodes.
-// Does not decode the directory entries, inode data, jornal or superblock backups.
+// Does not decode the directory entries, inode data, journal or superblock backups.
 // Heavily based on the linux kernel documentation:
 // https://www.kernel.org/doc/html/latest/filesystems/ext4/
 

@@ -15,7 +15,7 @@ enum LumpIndex : u32 {
 	Entities,
 	Planes,
 	Textures,
-	Vertexes,
+	Vertices,
 	Visibility,
 	Nodes,
 	Texinfo,
@@ -107,7 +107,7 @@ struct dface_t
 
 struct dedge_t
 {
-	u16 v[2]; // indices of vertexes
+	u16 v[2]; // indices of vertices
 };
 
 struct dclipnode_t
@@ -182,7 +182,7 @@ struct EntityData
 };
 
 s32 models_count = get_lump_element_count(LumpIndex::Models, sizeof(dmodel_t));
-s32 vertexes_count = get_lump_element_count(LumpIndex::Vertexes, sizeof(vec3f));
+s32 vertexes_count = get_lump_element_count(LumpIndex::Vertices, sizeof(vec3f));
 s32 planes_count = get_lump_element_count(LumpIndex::Planes, sizeof(dplane_t));
 s32 leafs_count = get_lump_element_count(LumpIndex::Leafs, sizeof(dleaf_t));
 s32 nodes_count = get_lump_element_count(LumpIndex::Nodes, sizeof(dnode_t));
@@ -194,7 +194,7 @@ s32 clipnodes_count = get_lump_element_count(LumpIndex::Clipnodes, sizeof(dclipn
 s32 texinfo_count = get_lump_element_count(LumpIndex::Texinfo, sizeof(dtexinfo_t));
 
 dmodel_t models_lump[models_count] @ get_lump_address(LumpIndex::Models);
-dvertex_t vertexes_lump[vertexes_count] @ get_lump_address(LumpIndex::Vertexes);
+dvertex_t vertexes_lump[vertexes_count] @ get_lump_address(LumpIndex::Vertices);
 dplane_t planes_lump[planes_count] @ get_lump_address(LumpIndex::Planes);
 dleaf_t leafs_lump[leafs_count] @ get_lump_address(LumpIndex::Leafs);
 dnode_t nodes_lump[nodes_count] @ get_lump_address(LumpIndex::Nodes);

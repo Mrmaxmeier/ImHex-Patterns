@@ -51,7 +51,7 @@ struct BaseBox {
     // Calculate the size of the current box
     // 1. If the size is equal to 1 -> the box size is equal to 'largeSize' attribute.
     // 2. If the size is equal to 0 -> The box extends to the end of the file.
-    // 3. Otherwise, size is equaly to the 'size' attribute.
+    // 3. Otherwise, size is equally to the 'size' attribute.
     if (this.size == 1) {
         u64 largeSize;
         boxSize = largeSize;

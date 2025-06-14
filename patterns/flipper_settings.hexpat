@@ -39,7 +39,7 @@
 /* ======= Common structures =======
 
     Flipper datatype aliases
-    They are added for easyer translatiom from the Flipper soruce into ImHex
+    They are added for easier translatiom from the Flipper soruce into ImHex
 */
 using int8_t = u8;
 using uint8_t = u8;
@@ -64,13 +64,13 @@ struct SavedStructHeader {
     uint8_t version;
     uint8_t checksum; //Sum of data-bytes
     uint8_t flags; //Not used always 0
-    uint32_t timestamp; //Not used alwas 0
+    uint32_t timestamp; //Not used always 0
 };
 
 /* ======= Infrared settings '.infrared.settings' ======= */
 
 /*
-    Lists all avalible outputs for the Infrared appication
+    Lists all available outputs for the Infrared application
    @source https://github.com/flipperdevices/flipperzero-firmware/blob/a403e5f543a5423e39ac1700ae4711e9e489445e/targets/furi_hal_include/furi_hal_infrared.h#L23
 */
 enum FuriHalInfraredTxPin : uint8_t {
@@ -111,7 +111,7 @@ struct BtSettings {
 /* ======= Dolphin state '.dolphin.state' ======= */
 
 /**
-    Lists all avalible Apps, that grand you points
+    Lists all available Apps, that grand you points
     @source https://github.com/flipperdevices/flipperzero-firmware/blob/a403e5f543a5423e39ac1700ae4711e9e489445e/applications/services/dolphin/helpers/dolphin_deed.h#L18
 */
 enum  DolphinApp : uint16_t {
@@ -139,7 +139,7 @@ struct DolphinStoreData{
     padding[4];
 };
 
-/* ======= Desktop settings '.dektop.settings' ======= */
+/* ======= Desktop settings '.desktop.settings' ======= */
 
 #define MAX_PIN_SIZE   10
 #define MIN_PIN_SIZE   4

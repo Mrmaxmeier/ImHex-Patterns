@@ -940,7 +940,7 @@ struct Chunk {
                 ChunkIdentifier::POINT_ARRAY
             ) : {
                 u16 count;
-                Vector3f vectices[count] [[hex::visualize("3d", this, null)]];
+                Vector3f vertices[count] [[hex::visualize("3d", this, null)]];
             }
 
             (

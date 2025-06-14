@@ -11,7 +11,7 @@ import std.mem;
 u32 dt_hdr_offset;
 if (std::mem::read_unsigned(4096, 4, std::mem::Endian::Little) == 0x54445348) {
     // for DTS dumped from UPDATE.APP
-    // everything is offseted 4096 bytes
+    // everything is offset by 4096 bytes
     dt_hdr_offset = 0x1000;
 } else {
     // for DTS dumped from Huawei device

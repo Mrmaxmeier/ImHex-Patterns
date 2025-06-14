@@ -8,7 +8,7 @@
 #define LABEL_APPLICATION 0xFF
 #define LABEL_PLAINTEXT 0x01
 
-// Indentifier Magics
+// Identifier Magics
 #define IMAGE_SEPERATOR_MAGIC 0x2C
 #define EXTENSION_INTRODUCER_MAGIC 0x21
 #define GIF_TRAILER_MAGIC 0x3B
@@ -84,7 +84,7 @@ struct ImageDescriptor {
         Color lct[std::math::pow(2, flags.lctSize + 1)];
     }
     u8 lzwMinCode [[comment("This byte determines the initial number of bits used for LZW codes in the image data")]];
-    DataSubBlocks lzwCompressedData [[comment("Data is pallet indecies either into current LDC or GCT and is compressed using LZW")]];
+    DataSubBlocks lzwCompressedData [[comment("Data is pallet indices either into current LDC or GCT and is compressed using LZW")]];
 };
 
 struct CommentExtension {

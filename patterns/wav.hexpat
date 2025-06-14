@@ -151,7 +151,7 @@ struct WaveSample {
 };
 
 struct WaveCuePoint {
-  u32  indentifier;
+  u32  identifier;
   u32  position;
   char chunkID[4];
   u32  chunkStart;
