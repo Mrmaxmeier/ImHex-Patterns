@@ -2,7 +2,6 @@
 #pragma description Microsoft Hyper-V Virtual Hard Disk
 
 import std.io;
-import std.ptr;
 import std.core;
 
 import type.guid;

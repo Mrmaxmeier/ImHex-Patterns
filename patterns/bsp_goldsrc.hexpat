@@ -1,6 +1,5 @@
 #pragma description GoldSrc engine map (Half-Life 1)
 
-import std.ptr;
 import std.mem;
 import std.sys;
 
